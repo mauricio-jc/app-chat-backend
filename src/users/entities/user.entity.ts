@@ -1,5 +1,3 @@
-import { Exclude } from 'class-transformer';
-
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -15,7 +13,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 255, nullable: false })
+  @Column({ type: 'uuid', nullable: false })
   @Generated('uuid')
   uuid: string;
 
@@ -37,12 +35,9 @@ export class User {
   @Column({ name: 'email', type: 'varchar', length: 255, nullable: false })
   email: string;
 
-  @Column({ name: 'identifier', type: 'varchar', length: 20, nullable: false })
-  identifier: string;
-
-  @Exclude({
-    toPlainOnly: true,
-  })
   @Column({ name: 'password', type: 'varchar', length: 255, nullable: false })
   password: string;
+
+  @Column({ name: 'identifier', type: 'varchar', length: 11, nullable: false })
+  identifier: string;
 }
