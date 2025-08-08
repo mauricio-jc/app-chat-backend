@@ -1,0 +1,43 @@
+services:
+  application:
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    image: app_chat_docker
+    container_name: app_chat_docker
+    command: npm run start:dev
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    networks:
+      - docker_network
+    environment:
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+      - DB_HOST=${DB_HOST}
+      - PORT=${PORT}
+
+  db:
+    image: postgres:14.1-alpine
+    container_name: chat_db
+    ports:
+      - '${DB_PORT}:5432'
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      - docker_network
+
+volumes:
+  db:
+
+networks:
+  docker_network:
+    driver: bridge
